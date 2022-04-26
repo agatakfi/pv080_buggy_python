@@ -1,25 +1,26 @@
 # contains bunch of buggy examples
 # taken from https://hackernoon.com/10-common-security-gotchas-in-python-and-how-to-avoid-them-e19fbe265e03
-import cPickle
+from app import app
+
 import subprocess
 import base64
-import subprocess
+import pickle
 import flask
 
 # Input injection
-def transcode_file(request, filename):
+def transcode_file(filename):
     command = 'ffmpeg -i "{source}" output_file.mpg'.format(source=filename)
-    subprocess.call(command, shell=True)  # a bad idea!
+    subprocess.call(command, shell=False)  # a bad idea!
 
 
 # Assert statements
-def foo(request, user):
+def fujka(user):
     assert user.is_admin, 'user does not have access'
     # secure code...
 
 
 # Pickles
-class RunBinSh(object):
+class RunBinSh():
     def __reduce__(self):
         return (subprocess.Popen, (('/bin/sh',),))
 
